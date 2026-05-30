@@ -1,7 +1,12 @@
-<mvc:View controllerName="zsetpack.controller.App"
-    displayBlock="true"
+<mvc:View
+    controllerName="zsetpack.controller.App"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <App id="app">
-    </App>
+    xmlns="sap.m"
+    displayBlock="true"
+>
+    <App
+        id="app"
+        width="100%"
+        height="100%"
+    />
 </mvc:View>

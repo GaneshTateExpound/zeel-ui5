@@ -1,6 +1,303 @@
-<mvc:View controllerName="zsetpack.controller.View1"
+<mvc:View
+    controllerName="zsetpack.controller.View1"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    height="100%"
+    displayBlock="true">
+
+    <Page
+        id="page"
+        title="{i18n>title}"
+        showHeader="true"
+        showFooter="true"
+        enableScrolling="true"
+        class="sapUiResponsiveContentPadding zsetpackPage">
+
+        <content>
+            <!-- Selection Screen -->
+            <Panel
+                headerText="Selection Screen"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin"
+                width="auto">
+
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="4"
+                    labelSpanL="4"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="3"
+                    columnsL="3"
+                    columnsM="2"
+                    singleContainerFullSize="false">
+
+                    <f:content>
+                        <core:Title text="Order Details" />
+
+                        <Label text="Plant" design="Bold" labelFor="plantInput" />
+                        <Input
+                            id="plantInput"
+                            placeholder="Enter Plant"
+                            value="{/selection/plant}" />
+
+                        <Label text="Sales Order" design="Bold" labelFor="salesOrderInput" />
+                        <Input
+                            id="salesOrderInput"
+                            placeholder="Enter Sales Order"
+                            value="{/selection/salesOrder}" />
+
+                        <Label text="Line Item" design="Bold" labelFor="lineItemInput" />
+                        <Input
+                            id="lineItemInput"
+                            placeholder="Enter Line Item"
+                            value="{/selection/lineItem}" />
+
+                        <core:Title text="Production Details" />
+
+                        <Label text="Production Order" design="Bold" labelFor="productionOrderInput" />
+                        <Input
+                            id="productionOrderInput"
+                            placeholder="Enter Production Order"
+                            value="{/selection/productionOrder}" />
+
+                        <Label text="Lot Number" design="Bold" labelFor="lotNumberInput" />
+                        <Input
+                            id="lotNumberInput"
+                            placeholder="Enter Lot Number"
+                            value="{/selection/lotNumber}" />
+
+                        <Label text="Set Packing Ratio" design="Bold" labelFor="packingRatioSelect" />
+                        <Select
+                            id="packingRatioSelect"
+                            selectedKey="{/selection/packingRatio}">
+                            <core:Item key="4" text="4" />
+                            <core:Item key="6" text="6" />
+                            <core:Item key="8" text="8" />
+                        </Select>
+
+                        <core:Title text="Scheduling" />
+
+                        <Label text="Date" design="Bold" labelFor="dateInput" />
+                        <DatePicker
+                            id="dateInput"
+                            displayFormat="MM/dd/yyyy"
+                            valueFormat="MM/dd/yyyy"
+                            value="{/selection/date}" />
+                    </f:content>
+                </f:SimpleForm>
+            </Panel>
+
+            <!-- Scan Barcode -->
+            <Panel
+                headerText="Scan Barcode"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin"
+                width="auto">
+
+                <HBox
+                    alignItems="Center"
+                    wrap="Wrap"
+                    class="sapUiSmallMarginTop">
+
+                    <Label
+                        text="Scan Barcode:"
+                        class="sapUiSmallMarginEnd"
+                        design="Bold"
+                        labelFor="valueInput" />
+
+                    <Input
+                        id="valueInput"
+                        placeholder="Enter Barcode Number..."
+                        width="30rem"
+                        submit=".onSubmit"
+                        liveChange=".onLiveChange"
+                        class="sapUiSmallMarginEnd" />
+
+                    <Button
+                        text="Add"
+                        press=".onSubmit"
+                        type="Emphasized"
+                        icon="sap-icon://add" />
+                </HBox>
+            </Panel>
+
+            <!-- Set Details -->
+            <Panel
+                headerText="Set Details"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin"
+                width="auto">
+
+                <Table
+                    id="valuesTable"
+                    items="{/items}"
+                    noDataText="No records submitted yet."
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    growing="true"
+                    growingThreshold="20"
+                    mode="MultiSelect">
+
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Set Details" level="H3" />
+                            <ToolbarSpacer />
+                            <Button
+                                text="Delete"
+                                icon="sap-icon://delete"
+                                type="Reject"
+                                press=".onDeleteSetDetails" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column>
+                            <Text text="Barcode Number" />
+                        </Column>
+
+                        <Column>
+                            <Text text="Batch" />
+                        </Column>
+
+                        <Column>
+                            <Text text="Style Name" />
+                        </Column>
+
+                        <Column width="100px" hAlign="End">
+                            <Text text="Quantity" />
+                        </Column>
+
+                        <Column>
+                            <Text text="Size/Color Details" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{barcode}" />
+                                <Text text="{batch}" />
+                                <Text text="{styleName}" />
+                                <Text text="{quantity}" />
+                                <Text text="{sizeColor}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <!-- Packing Details -->
+            <Panel
+                headerText="Packing Details"
+                expandable="true"
+                expanded="true"
+                class="sapUiResponsiveMargin"
+                width="auto">
+
+                <Table
+                    id="packingTable"
+                    items="{/packingItems}"
+                    noDataText="No packing items added yet."
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    growing="true"
+                    growingThreshold="20"
+                    mode="MultiSelect">
+
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Packing Details" level="H3" />
+                            <ToolbarSpacer />
+
+                            <Input
+                                id="matInput"
+                                placeholder="Material Number"
+                                width="220px" />
+
+                            <Input
+                                id="qtyInput"
+                                placeholder="Qty"
+                                type="Number"
+                                width="90px" />
+
+                            <Input
+                                id="uomInput"
+                                placeholder="UoM"
+                                width="90px" />
+
+                            <Button
+                                text="Add Item"
+                                icon="sap-icon://add"
+                                press=".onAddPackingItem"
+                                type="Emphasized" />
+
+                            <Button
+                                text="Delete"
+                                icon="sap-icon://delete"
+                                press=".onDeletePackingDetails"
+                                type="Reject" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column>
+                            <Text text="Material Number" />
+                        </Column>
+
+                        <Column width="120px" hAlign="End">
+                            <Text text="Qty" />
+                        </Column>
+
+                        <Column width="120px">
+                            <Text text="UoM" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{material}" />
+                                <Text text="{qty}" />
+                                <Text text="{uom}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <HBox
+    justifyContent="End"
+    alignItems="Center"
+    class="sapUiResponsiveMargin sapUiSmallMarginTop sapUiSmallMarginBottom">
+
+    <Button
+        text="Submit"
+        type="Accept"
+        icon="sap-icon://accept"
+        press=".onFinalSubmit" />
+</HBox>
+        </content>
+
+        <!-- <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="Submit"
+                    type="Accept"
+                    icon="sap-icon://accept"
+                    press=".onFinalSubmit" />
+            </OverflowToolbar>
+        </footer> -->
     </Page>
 </mvc:View>

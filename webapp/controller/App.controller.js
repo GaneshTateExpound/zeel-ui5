@@ -4,7 +4,7 @@ sap.ui.define([
   "use strict";
 
   return BaseController.extend("zsetpack.controller.App", {
-      onInit() {
-      }
+    onInit() {
+    }
   });
 });
